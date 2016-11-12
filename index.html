@@ -6,9 +6,10 @@
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <style>
-        .axis line {
+        path.axis line {
             shape-rendering: crispEdges;
             stroke: #000;
+            stroke-width:0.1px;
         }
         .domain text {
             font: 10px sans-serif;
@@ -21,8 +22,11 @@
         .selecting rect.selected {
             fill-opacity:1;
         }
+        .controltick .tick{ display: none; }
 
-
+        .controltick path.domain line{
+            stroke-width:0.1px;
+        }
 
 
         .brush .extent {
@@ -192,9 +196,11 @@
             });
         });
     });
+    var parseDate = d3.time.format("%m/%d/%y").parse;
+//    var x = d3.time.scale().domain([parseDate("10/27/15"), parseDate("4/13/16")]).range([0,900]);
     var x = d3.scale.ordinal().rangeRoundBands([0, 900], .2);
-
     var y = d3.scale.linear().range([200, 0]);
+    var div = d3.select(".bar").append("div");
 //change the position of the bar chart at end; Start to draw barChart/
 function drawBar(key) {
     var bar = d3.select("svg").append("g").attr("class", "barChart").attr("transform", "translate(" + margin.left + ", " + 500 + ")");
@@ -205,8 +211,7 @@ function drawBar(key) {
 
     d3.csv("data.csv", function (d) {
         d.PLUS_MINUS = +d.PLUS_MINUS;
-        var date = d.GAME_DATE.split("/");
-        d.GAME_DATE = new Date(date[0], date[1], date[2]);
+        d.GAME_DATE = parseDate(d.GAME_DATE);
         return d
     }, function (error, data) {
         if (error) throw error;
@@ -233,6 +238,7 @@ function drawBar(key) {
                 .enter()
                 .append("rect")
                 .attr("x", function (d) {
+                    console.log(d.GAME_DATE);
                     return x(d.GAME_DATE)
                 })
                 .attr("y", function (d) {
@@ -248,10 +254,15 @@ function drawBar(key) {
                     } else {
                         return "green";
                     }
+                })
+                .on("click",function(d){
+                    div.html(d.GAME_DATE);
                 });
+        console.log(y(0));
         bar.append("g")
                 .attr("class", "x axis")
-                .style("stroke-width", "1px")
+                .attr("class","controltick")
+                .attr("stroke-width", 1)
                 .attr("transform", "translate(0," + y(0) + ")")
                 .call(xAxis);
         bar.append("g")
