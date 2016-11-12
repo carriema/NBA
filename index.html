@@ -180,7 +180,8 @@
         });
     });
 //change the position of the bar chart at end; Start to draw barChart/
-    var bar = d3.select("svg").append("g").attr("transform","translate(" + margin.left + ", " + 500 + ")");
+
+    var bar = d3.select("svg").append("g").attr("class", "barChart").attr("transform","translate(" + margin.left + ", " + 500 + ")");
     var x=d3.scale.ordinal().rangeRoundBands([0,900],.2);;
     var y=d3.scale.linear() .range([200, 0]);
     var xAxis = d3.svg.axis().scale(x).tickValues(x.domain()).orient("bottom");
@@ -335,7 +336,12 @@
 			};
 			//Call function to draw the Radar chart
 			RadarChart(".radarChart", data, radarChartOptions);
-                        
+            svg.selectAll("g.randar").remove();
+        RadarChart(".radarChart", data, radarChartOptions);
+        svg.selectAll("g.randar").remove();RadarChart(".radarChart", data, radarChartOptions);
+        svg.selectAll("g.randar").remove();RadarChart(".radarChart", data, radarChartOptions);
+        svg.selectAll("g.randar").remove();RadarChart(".radarChart", data, radarChartOptions);
+
 
 
 			function RadarChart(id, data, options) {
@@ -384,7 +390,6 @@
 	d3.select(id).select("svg").remove();
 	
 	//Initiate the radar chart SVG
-<<<<<<< HEAD
 //	var svg = d3.select("body").append("svg")
 //			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
 //			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
@@ -395,7 +400,6 @@
             .attr("class", "randar")
 			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
 
-=======
 	//var svg = d3.select("body").append("svg")
 	//		.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
 	//		.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
@@ -403,9 +407,9 @@
 	//Append a g element
     //这里修改了一下，直接在同一个svg上画雷达图		
 	var g = svg.append("g")
+            .attr("class", "randar")
 			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left+700) + "," + (cfg.h/2 + cfg.margin.top) + ")");
-	
->>>>>>> origin/master
+
 	/////////////////////////////////////////////////////////
 	////////// Glow filter for some extra pizzazz ///////////
 	/////////////////////////////////////////////////////////
