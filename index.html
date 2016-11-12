@@ -384,14 +384,16 @@
 	d3.select(id).select("svg").remove();
 	
 	//Initiate the radar chart SVG
-	var svg = d3.select("body").append("svg")
-			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
-			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
-			.attr("class", "radar"+id);
-	//Append a g element		
+//	var svg = d3.select("body").append("svg")
+//			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
+//			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+//			.attr("class", "radar"+id);
+	//Append a g element
+
 	var g = svg.append("g")
+            .attr("class", "randar")
 			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
-	
+
 	/////////////////////////////////////////////////////////
 	////////// Glow filter for some extra pizzazz ///////////
 	/////////////////////////////////////////////////////////
