@@ -44,7 +44,7 @@
 <script>
 
     var margin = {left:30, right : 30, top:180, bottom: 100};
-    var width = 900 + margin.left + margin.right,
+    var width = 1100 + margin.left + margin.right,
             height = 600 + margin.top + margin.bottom;
 
 
@@ -315,10 +315,8 @@
 
     	//code from cinnamon
 
-    		console.log(margin);
-
     		var margin = {top: 100, right: 100, bottom: 100, left: 100},
-				width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
+				width = Math.min(500, window.innerWidth - 10) - margin.left - margin.right,
 				height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
 			//replace the data here
 			var data = team_list;
@@ -337,6 +335,8 @@
 			};
 			//Call function to draw the Radar chart
 			RadarChart(".radarChart", data, radarChartOptions);
+                        
+
 
 			function RadarChart(id, data, options) {
 	var cfg = {
@@ -384,6 +384,7 @@
 	d3.select(id).select("svg").remove();
 	
 	//Initiate the radar chart SVG
+<<<<<<< HEAD
 //	var svg = d3.select("body").append("svg")
 //			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
 //			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
@@ -394,6 +395,17 @@
             .attr("class", "randar")
 			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
 
+=======
+	//var svg = d3.select("body").append("svg")
+	//		.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
+	//		.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+	//		.attr("class", "radar"+id);
+	//Append a g element
+    //这里修改了一下，直接在同一个svg上画雷达图		
+	var g = svg.append("g")
+			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left+700) + "," + (cfg.h/2 + cfg.margin.top) + ")");
+	
+>>>>>>> origin/master
 	/////////////////////////////////////////////////////////
 	////////// Glow filter for some extra pizzazz ///////////
 	/////////////////////////////////////////////////////////
