@@ -210,7 +210,7 @@ function drawBar(key) {
 
     d3.csv("data.csv", function (d) {
         d.PLUS_MINUS = +d.PLUS_MINUS;
-        d.GAME_DATE = parseDate(d.GAME_DATE);
+//        d.GAME_DATE = parseDate(d.GAME_DATE).toString();
         return d
     }, function (error, data) {
         if (error) throw error;
@@ -237,7 +237,7 @@ function drawBar(key) {
                 .enter()
                 .append("rect")
                 .attr("x", function (d) {
-                    console.log(d.GAME_DATE);
+//                    console.log(x);
                     return x(d.GAME_DATE)
                 })
                 .attr("y", function (d) {
@@ -257,7 +257,7 @@ function drawBar(key) {
                 .on("click",function(d){
                     div.html(d.GAME_DATE);
                 });
-        console.log("translate( 0," + y(0) + ")");
+//        console.log("translate( 0," + y(0) + ")");
         bar.append("g")
                 .attr("class", "x axis")
                 .attr("class","controltick")
@@ -287,11 +287,17 @@ function drawBar(key) {
             bar.classed("selecting", true);
         }
         function brushmove() {
+
             var s = d3.event.target.extent();
             //console.log(s);
-            //console.log(s);
-            console.log(s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1]);
+
             rectangle.classed("selected", function (d) {
+
+//                 console.log(x(d.GAME_DATE));
+                console.log(d.GAME_DATE);
+                console.log(x(d.GAME_DATE));
+//                console.log(d.GAME_DATE);
+//                console.log(s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1]);
                 return s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1];
             });
         }
@@ -355,8 +361,8 @@ function drawBar(key) {
         //check the sum for each axis
         //console.log(teamd.map(function(d){return d.AST}).reduce(add,0))
         teamd = teamd.filter(function(d){
-//            console.log(d.GAME_DATE);
-//            console.log(x(d.GAME_DATE));
+            console.log(d.GAME_DATE);
+            console.log(x(d.GAME_DATE));
             return range[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= range[1]
         });
 
