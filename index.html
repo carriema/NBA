@@ -6,10 +6,15 @@
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <style>
-        path.axis line {
-            shape-rendering: crispEdges;
-            stroke: #000;
-            stroke-width:0.1px;
+        g.controltick {
+            fill: none;
+            stroke: #666;
+            stroke-width: 2px;
+        }
+        g.yclass {
+            fill: none;
+            stroke: #666;
+            stroke-width: 2px;
         }
         .domain text {
             font: 10px sans-serif;
@@ -203,8 +208,8 @@
     var div = d3.select(".bar").append("div");
 //change the position of the bar chart at end; Start to draw barChart/
 function drawBar(key) {
-    var bar = d3.select("svg").append("g").attr("class", "barChart").attr("transform", "translate(" + margin.left + ", " + 500 + ")");
-    var xAxis = d3.svg.axis().scale(x).ticks(2).orient("bottom");
+    var bar = d3.select("svg").append("g").attr("class", "barChart").attr("transform", "translate(" + margin.left + ", " + 450 + ")");
+    var xAxis = d3.svg.axis().scale(x).ticks(5).orient("bottom");
     var yAxis = d3.svg.axis().scale(y).orient("left");
 
 
@@ -261,11 +266,12 @@ function drawBar(key) {
         bar.append("g")
                 .attr("class", "x axis")
                 .attr("class","controltick")
-                .attr("stroke-width", 1)
+                .attr("stroke-width", "1px")
                 .attr("transform", "translate( 0," + y(0) + ")")
                 .call(xAxis);
         bar.append("g")
                 .attr("class", "y axis")
+                .attr("class","yclass")
                 .style("stroke-width", "1px")
                 .attr("transform", "translate(0, 0)")
                 .call(yAxis);
@@ -282,6 +288,11 @@ function drawBar(key) {
                         .on("brushend", brushend))
                 .selectAll("rect")
                 .attr("height", 200);
+        bar.append("text")
+                .attr("transform", "translate(150, 230)")
+                .text("2015-2016 Season Loose Scores and Gain Scores For Each Game")
+                .attr("font-size","20px")
+
 
         function brushstart() {
             bar.classed("selecting", true);
