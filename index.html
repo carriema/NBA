@@ -368,10 +368,14 @@ function drawBar(key) {
 
         r_data = [];
 
-
+        console.log(data2)
         for (var i = 0; i < d_list.length; i++) {
             max_i = Math.max.apply(null, data2.map(function (d) {
-                return d.values.map(function (dd) {
+                return d.values.filter(function(d){
+            console.log(d.GAME_DATE);
+            console.log(x(d.GAME_DATE));
+            return range[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= range[1]
+            }).map(function (dd) {
                     return dd[d_list[i]]
                 }).reduce(add, 0)
             }));
