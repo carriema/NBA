@@ -501,7 +501,14 @@ function drawBar(key) {
             var g = svg.append("g")
                     .attr("class", "randar")
                     .attr("transform", "translate(" + (cfg.w / 2 + cfg.margin.left + 700) + "," + (cfg.h / 2 + cfg.margin.top) + ")");
-
+            svg.append("text")
+            .attr("x",0)
+            .attr("y", 30)
+            .text("Game Statistic")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "20px")
+            .attr("fill", "black")
+            .attr("transform", "translate(" + (cfg.w / 2 + cfg.margin.left + 650) + ",0)");
             /////////////////////////////////////////////////////////
             ////////// Glow filter for some extra pizzazz ///////////
             /////////////////////////////////////////////////////////
