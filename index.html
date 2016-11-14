@@ -203,7 +203,9 @@
     function transit() {
         d3.selectAll(".AllCircle")
                 .transition()
-                .attr("r", 10);
+                .attr("r", function(d){
+                    //console.log(d); d.abb
+                    return 10;});
     }
     var parseDate = d3.time.format("%m/%d/%y").parse;
 //    var x = d3.time.scale().domain([parseDate("10/27/15"), parseDate("4/13/16")]).range([0,900]);
@@ -614,11 +616,51 @@ function drawBar(key, aspect) {
                     })
                     .call(wrap, cfg.wrapWidth)
                     .on("click", function(d){
+                        var t = d
                         console.log(d);
-                            
-                            svg.selectAll("g.barChart").remove();
+                        svg.selectAll("g.barChart").remove();
+                        drawBar(team,d);
 
-                            drawBar(team,d);
+                        d3.csv("data.csv", function (data) {
+                            x.domain(data.map(function (d) {
+                                return d.GAME_DATE;
+                            }));
+                           
+                            d_list = ['AST', 'BLK', 'STL', 'REB', 'TOV', 'DREB']
+
+                            //custome function
+
+                            function groupByArray(xs, key) { return xs.reduce(function (rv, x) { let v = key instanceof Function ? key(x) : x[key]; let el = rv.find((r) => r && r.key === v); if (el) { el.values.push(x); } else { rv.push({ key: v, values: [x] }); } return rv; }, []); }
+
+                            function add(a, b) {
+                                return a + b;
+                            }
+
+                            //parse the str into float
+                            data.map(function (d) {
+                                for (var i = 0; i < d_list.length; i++) {
+                                    d[d_list[i]] = parseFloat(d[d_list[i]]);
+                                }
+                            })
+
+
+                            data2 = groupByArray(data, ['TEAM_ABBREVIATION'])
+                            var tmp = {}
+                            values = []
+                            data2 = data2.map(function(d){
+                                tmp[d.key] = d.values.map(function(d){return d[t]}).reduce(add,0)
+                                values.push(d.values.map(function(d){return d[t]}).reduce(add,0))
+                                console.log(d.key)
+                                console.log(d.values.map(function(d){return d[t]}))
+                            })
+                            console.log(tmp,d3.max(values))
+
+                            d3.selectAll(".AllCircle")
+                                .transition()
+                                .attr("r", function(d){
+                                    //console.log(d); d.abb
+                                    return 10*tmp[d.abb]/d3.max(values)});
+                        })
 
                         });
 
