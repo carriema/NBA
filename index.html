@@ -92,6 +92,7 @@
         d3.json("US-geo.json", function(json) {
             //Merge the EastorWest data and GeoJSON
             //Loop through once for each EastorWest data value
+
             for (var i = 0; i < data.length; i++) {
                 var dataState = data[i].state;				//Grab state name
                 var dataValue = parseFloat(data[i].value);	//Grab data value, and convert from string to float
@@ -180,7 +181,7 @@
                             d3.select(this).style("fill", "yellow");
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
-                            drawBar(d.abb);
+                            drawBar(d.abb,"AST");
                             drawRandarChart(d.abb,[0,900]);
                         });
 //                        .style("cursor", "pointer")
@@ -207,14 +208,20 @@
     var y = d3.scale.linear().range([200, 0]);
     var div = d3.select(".bar").append("div");
 //change the position of the bar chart at end; Start to draw barChart/
-function drawBar(key) {
-    var bar = d3.select("svg").append("g").attr("class", "barChart").attr("transform", "translate(" + margin.left + ", " + 450 + ")");
+function drawBar(key, aspect) {
+    var bar = d3.select("svg").append("g").attr("class", "barChart").attr("transform", "translate(" + margin.left + ", " + 480 + ")");
     var xAxis = d3.svg.axis().scale(x).ticks(5).orient("bottom");
     var yAxis = d3.svg.axis().scale(y).orient("left");
 
 
     d3.csv("data.csv", function (d) {
-        d.PLUS_MINUS = +d.PLUS_MINUS;
+        d.DREB = +d.DREB;
+        d.TOV = +d.TOV;
+        d.REB = +d.REB;
+        d.STL = +d.STL;
+        d.BLK = +d.BLK;
+        d.AST = +d.AST;
+        d.PTS = +d.PTS;
 //        d.GAME_DATE = parseDate(d.GAME_DATE).toString();
         return d
     }, function (error, data) {
@@ -231,11 +238,16 @@ function drawBar(key) {
         //console.log("data");
         //console.log(value);
         x.domain(value.map(function (d) {
+//            console.log(d[aspect]);
+//            console.log(d.PTS);
             return d.GAME_DATE;
         }));
-        y.domain(d3.extent(value, function (d1) {
-            return d1.PLUS_MINUS;
-        })).nice();
+        console.log(value);
+        y.domain(d3.extent(value, function (d) {
+            return d[aspect];
+        }));
+//        y.domain([80,150])
+
 
         var rectangle = bar.append("g").selectAll("rect")
                 .data(value)
@@ -246,14 +258,14 @@ function drawBar(key) {
                     return x(d.GAME_DATE)
                 })
                 .attr("y", function (d) {
-                    return y(Math.max(0, d.PLUS_MINUS))
+                    return y(d[aspect])
                 })
                 .attr("width", x.rangeBand())
                 .attr("height", function (d) {
-                    return Math.abs(y(d.PLUS_MINUS) - y(0))
+                    return 200 - y(d[aspect]);
                 })
                 .style("fill", function (d) {
-                    if (d.PLUS_MINUS < 0) {
+                    if (d[aspect] < 0) {
                         return "red";
                     } else {
                         return "green";
@@ -305,8 +317,8 @@ function drawBar(key) {
             rectangle.classed("selected", function (d) {
 
 //                 console.log(x(d.GAME_DATE));
-                console.log(d.GAME_DATE);
-                console.log(x(d.GAME_DATE));
+//                console.log(d.GAME_DATE);
+//                console.log(x(d.GAME_DATE));
 //                console.log(d.GAME_DATE);
 //                console.log(s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1]);
                 return s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1];
@@ -374,8 +386,8 @@ function drawBar(key) {
         //check the sum for each axis
         //console.log(teamd.map(function(d){return d.AST}).reduce(add,0))
         teamd = teamd.filter(function(d){
-            console.log(d.GAME_DATE);
-            console.log(x(d.GAME_DATE));
+//            console.log(d.GAME_DATE);
+//            console.log(x(d.GAME_DATE));
             return range[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= range[1]
         });
 
@@ -385,8 +397,8 @@ function drawBar(key) {
         for (var i = 0; i < d_list.length; i++) {
             max_i = Math.max.apply(null, data2.map(function (d) {
                 return d.values.filter(function(d){
-            console.log(d.GAME_DATE);
-            console.log(x(d.GAME_DATE));
+//            console.log(d.GAME_DATE);
+//            console.log(x(d.GAME_DATE));
             return range[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= range[1]
             }).map(function (dd) {
                     return dd[d_list[i]]
