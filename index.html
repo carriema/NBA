@@ -201,10 +201,9 @@
         });
     });
     function transit() {
-        d3.select("g.team.AllCircle")
+        d3.selectAll(".AllCircle")
                 .transition()
                 .attr("r", 10);
-        console.log(d3.select("g.team.AllCircle"));
     }
     var parseDate = d3.time.format("%m/%d/%y").parse;
 //    var x = d3.time.scale().domain([parseDate("10/27/15"), parseDate("4/13/16")]).range([0,900]);
