@@ -253,7 +253,7 @@ function drawBar(key, aspect) {
         }));
 //        y.domain([80,150])
 
-
+//        console.log(data);
         var rectangle = bar.append("g").selectAll("rect")
                 .data(value)
                 .enter()
@@ -293,7 +293,6 @@ function drawBar(key, aspect) {
                 .attr("transform", "translate(0, 0)")
                 .call(yAxis);
 
-
 //        bar.append("g")
 //                .attr("class", "y axis")
 //                .call(yAxis);
@@ -320,25 +319,50 @@ function drawBar(key, aspect) {
             //console.log(s);
 
             rectangle.classed("selected", function (d) {
-
-//                 console.log(x(d.GAME_DATE));
-//                console.log(d.GAME_DATE);
-//                console.log(x(d.GAME_DATE));
-//                console.log(d.GAME_DATE);
-//                console.log(s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1]);
                 return s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1];
             });
         }
 
         function brushend() {
 //            rectangle.classed("selected", false);
-            transit();
+//            transit();
             bar.classed("selecting", !d3.event.target.empty());
             svg.selectAll("g.randarChart").remove();
             if (d3.event.target.empty()){
                 drawRandarChart(team,[0,900]);
             } else {
+                var s = d3.event.target.extent();
                 drawRandarChart(team,d3.event.target.extent());
+                var dict = d3.nest()
+                        .key(function(d){return d.TEAM_ABBREVIATION})
+                        .key(function(d){ if(s[0] <= x(d.GAME_DATE) && x(d.GAME_DATE) <= s[1]) return (d)})
+                        .rollup(function(leaves){return {"PTS":d3.sum(leaves, function(d){return d[aspect];})}})
+                        .entries(data);
+//                console.log(dict);
+                var min = 100000;
+                        dict.forEach(function(key){
+                            val = key.values[0].values.PTS
+                            if (min > val) {
+                                min = val;
+                            }
+                    });
+                console.log("min: " + min);
+
+                d3.selectAll("circle")
+                        .transition()
+                        .attr("r", function(d){
+//                            return 10;
+                            var val = 0;
+                            dict.forEach(function(key){
+//                                console.log(key);
+                                if (key.key== d.abb) {
+                                    val = key.values[0].values.PTS
+                                    console.log(key.values[0].values.PTS);
+                                }
+                            })
+                            return min / val * 10;
+                        })
+
             }
         }
 
@@ -617,7 +641,7 @@ function drawBar(key, aspect) {
                     .call(wrap, cfg.wrapWidth)
                     .on("click", function(d){
                         var t = d
-                        console.log(d);
+//                        console.log(d);
                         svg.selectAll("g.barChart").remove();
                         drawBar(team,d);
 
@@ -631,6 +655,8 @@ function drawBar(key, aspect) {
                             //custome function
 
                             function groupByArray(xs, key) { return xs.reduce(function (rv, x) { let v = key instanceof Function ? key(x) : x[key]; let el = rv.find((r) => r && r.key === v); if (el) { el.values.push(x); } else { rv.push({ key: v, values: [x] }); } return rv; }, []); }
+
+                            svg.selectAll("g.barChart").remove();
 
                             function add(a, b) {
                                 return a + b;
@@ -650,10 +676,10 @@ function drawBar(key, aspect) {
                             data2 = data2.map(function(d){
                                 tmp[d.key] = d.values.map(function(d){return d[t]}).reduce(add,0)
                                 values.push(d.values.map(function(d){return d[t]}).reduce(add,0))
-                                console.log(d.key)
-                                console.log(d.values.map(function(d){return d[t]}))
+//                                console.log(d.key)
+//                                console.log(d.values.map(function(d){return d[t]}))
                             })
-                            console.log(tmp,d3.max(values))
+//                            console.log(tmp,d3.max(values))
 
                             d3.selectAll(".AllCircle")
                                 .transition()
