@@ -6,6 +6,9 @@
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <style>
+        .text_color {
+            fill:red;
+        }
         div.tooltip {
             position: absolute;
             text-align: center;
@@ -677,6 +680,8 @@ function drawBar(key, aspect) {
                         var t = d
 //                        console.log(d);
                         console.log(this);
+                        d3.selectAll(".text_color").classed("text_color",false);
+                        d3.select(this).classed("text_color",true);
 //                        this.transition().style("font-size","22px");
                         svg.selectAll("g.barChart").remove();
                         drawBar(team,d);
