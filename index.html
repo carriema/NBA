@@ -120,7 +120,6 @@
                     .style("fill", function(d) {
                         //Get data value
                         var EASTorWEST = d.properties.EASTorWEST;
-
                         if (EASTorWEST) {
                             //If value exists…
                             if (EASTorWEST == "East") {
@@ -156,7 +155,7 @@
 
                 //Circles for teams
                 nodes.append("circle")
-                        .attr("class", function(d) { return d.abb })
+                        .attr("class", "AllCircle")
                         .attr("r", 8)
                         .style("fill", function(d){
                             if (d.EASTorWEST == "East") {
@@ -201,6 +200,12 @@
             });
         });
     });
+    function transit() {
+        d3.select("g.team.AllCircle")
+                .transition()
+                .attr("r", 10);
+        console.log(d3.select("g.team.AllCircle"));
+    }
     var parseDate = d3.time.format("%m/%d/%y").parse;
 //    var x = d3.time.scale().domain([parseDate("10/27/15"), parseDate("4/13/16")]).range([0,900]);
     var x = d3.scale.ordinal().rangeRoundBands([0, 900], .2);
@@ -241,7 +246,7 @@ function drawBar(key, aspect) {
 //            console.log(d.PTS);
             return d.GAME_DATE;
         }));
-        console.log(value);
+//        console.log(value);
         y.domain(d3.extent(value, function (d) {
             return d[aspect];
         }));
@@ -274,12 +279,12 @@ function drawBar(key, aspect) {
                     div.html(d.GAME_DATE);
                 });
 //        console.log("translate( 0," + y(0) + ")");
-        bar.append("g")
-                .attr("class", "x axis")
-                .attr("class","controltick")
-                .attr("stroke-width", "1px")
-                .attr("transform", "translate( 0," + y(0) + ")")
-                .call(xAxis);
+//        bar.append("g")
+//                .attr("class", "x axis")
+//                .attr("class","controltick")
+//                .attr("stroke-width", "1px")
+//                .attr("transform", "translate( 0," + y(0) + ")")
+//                .call(xAxis);
         bar.append("g")
                 .attr("class", "y axis")
                 .attr("class","yclass")
@@ -326,6 +331,7 @@ function drawBar(key, aspect) {
 
         function brushend() {
 //            rectangle.classed("selected", false);
+            transit();
             bar.classed("selecting", !d3.event.target.empty());
             svg.selectAll("g.randarChart").remove();
             if (d3.event.target.empty()){
