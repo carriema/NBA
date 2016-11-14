@@ -180,7 +180,7 @@
                             d3.select(this).style("fill", "yellow");
                             svg.selectAll("g.barChart").remove();
                             svg.selectAll("g.randar").remove();
-                            drawBar(d.abb,"AST");
+                            drawBar(d.abb,"PTS");
                             drawRandarChart(d.abb,[0,900]);
                         });
 //                        .style("cursor", "pointer")
@@ -607,7 +607,15 @@ function drawBar(key, aspect) {
                     .text(function (d) {
                         return d
                     })
-                    .call(wrap, cfg.wrapWidth);
+                    .call(wrap, cfg.wrapWidth)
+                    .on("click", function(d){
+                        console.log(d);
+                            
+                            svg.selectAll("g.barChart").remove();
+
+                            drawBar(d.abb,"AST");
+
+                        });
 
             /////////////////////////////////////////////////////////
             ///////////// Draw the radar chart blobs ////////////////
