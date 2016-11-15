@@ -21,9 +21,11 @@ period of time through bar chart, the data of scores will also change for the ot
 
 #Technical achievements
 ---
-+* The size of the dots on the map is changed by transmission when data changed.
-+* The D3 brush is used to selected a period of time.
-+* Use Javascript map, reduce function and d3.nest() to manipulate and aggregate the data as we want.
+The size of the dots on the map is changed by transmission when data changed.
+
+The D3 brush is used to selected a period of time.
+
+Use Javascript map, reduce function and d3.nest() to manipulate and aggregate the data as we want.
 
 
 #Design achievements
