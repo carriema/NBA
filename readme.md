@@ -1,6 +1,6 @@
 #Assignment 5 - Visualizations and Multiple Views
 ===
-[Project page](https://carriema.github.io)
+[Project page](https://carriema.github.io/NBA/)
 
 
 #Teams: 
